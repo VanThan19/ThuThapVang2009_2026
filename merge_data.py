@@ -52,6 +52,17 @@ def process_and_merge():
 
     df_final = pd.merge(df_vnindex, df_gold_sjc, on='Ngày', how='outer')
     df_final = pd.merge(df_final, df_rate, on='Ngày', how='outer')
+    
+    # Sắp xếp lại thứ tự các cột cho đẹp: Ngày -> VN-Index -> Giá Vàng -> Tỷ giá
+    cols = ['Ngày', 
+            'VNIndex_Mở_cửa', 'VNIndex_Cao_nhất', 'VNIndex_Thấp_nhất', 'VNIndex_Đóng_cửa', 'VNIndex_Khối_lượng',
+            'Khu vực', 'Loại vàng', 'Mua vào', 'Bán ra',
+            'Mở cửa', 'Cao nhất', 'Thấp nhất', 'Đóng cửa (Tỷ giá chốt)']
+    
+    # Chỉ lấy những cột thực sự tồn tại trong df_final (phòng ngừa sai sót tên cột)
+    final_cols = [c for c in cols if c in df_final.columns]
+    df_final = df_final[final_cols]
+    
     df_final = df_final.sort_values(by='Ngày').reset_index(drop=True)
 
     max_gold_date = df_gold_sjc['Ngày'].max()

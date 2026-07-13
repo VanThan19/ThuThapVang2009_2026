@@ -1,0 +1,3 @@
+Tổng số dòng ban đầu: 5867
+Số dòng bị xóa: 2007
+Tổng số dòng còn lại: 3860

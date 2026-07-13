@@ -50,8 +50,8 @@ def process_and_merge():
     
     print(f"[+] Sau khi lọc vàng SJC chuẩn: {len(df_gold_sjc)} dòng.")
 
-    df_final = pd.merge(df_gold_sjc, df_rate, on='Ngày', how='outer')
-    df_final = pd.merge(df_final, df_vnindex, on='Ngày', how='outer')
+    df_final = pd.merge(df_vnindex, df_gold_sjc, on='Ngày', how='outer')
+    df_final = pd.merge(df_final, df_rate, on='Ngày', how='outer')
     df_final = df_final.sort_values(by='Ngày').reset_index(drop=True)
 
     max_gold_date = df_gold_sjc['Ngày'].max()

@@ -17,8 +17,6 @@ def clean_data():
     except Exception as e:
         print(f"Lỗi đọc file: {e}")
         return
-
-    # Xoá các dòng bị khuyết thông tin (có chứa NaN)
     df_cleaned = df.dropna()
     
     cleaned_rows = len(df_cleaned)
@@ -27,7 +25,6 @@ def clean_data():
     print(f"Số dòng bị xóa (do khuyết dữ liệu): {deleted_rows} dòng.")
     print(f"Tổng số dòng sau khi làm sạch: {cleaned_rows} dòng.")
     
-    # Lưu kết quả
     df_cleaned.to_csv(output_csv, index=False, encoding='utf-8-sig')
     try:
         df_cleaned.to_excel(output_excel, index=False)
@@ -37,7 +34,6 @@ def clean_data():
         
     print(f"[!] Đã lưu file CSV sạch: {output_csv}")
 
-    # Ghi log số dòng bị xóa ra 1 file text (nếu Thầy muốn lưu lại số dòng bị xóa thành file)
     with open("log_xoa_dong.txt", "w", encoding="utf-8") as f:
         f.write(f"Tổng số dòng ban đầu: {original_rows}\n")
         f.write(f"Số dòng bị xóa: {deleted_rows}\n")

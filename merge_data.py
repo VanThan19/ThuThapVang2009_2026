@@ -25,7 +25,7 @@ def process_and_merge():
 
     try:
         df_vnindex = pd.read_csv("vnindex_2009_to_5_2026.csv")
-        # Format column name correctly. Assuming it's 'time' and format is 'M/D/YYYY'
+       
         df_vnindex['Ngày'] = pd.to_datetime(df_vnindex['time'], errors='coerce')
         df_vnindex = df_vnindex.rename(columns={
             'open': 'VNIndex_Mở_cửa',
@@ -56,7 +56,9 @@ def process_and_merge():
 
     max_gold_date = df_gold_sjc['Ngày'].max()
 
-    df_final = df_final.ffill()
+    # Không ffill() để giữ nguyên dữ liệu trống (NaN) của VN-Index vào các ngày lễ, tết, cuối tuần
+    # theo đúng yêu cầu của Thầy.
+    # df_final = df_final.ffill()
     
     df_final = df_final[df_final['Ngày'] <= max_gold_date]
     

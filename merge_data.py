@@ -23,6 +23,24 @@ def process_and_merge():
         print("Có thể file chưa tải xong. Vui lòng đợi gold_scraper.py chạy xong 100%!")
         return
 
+    try:
+        df_vnindex = pd.read_csv("vnindex_2009_to_5_2026.csv")
+        # Format column name correctly. Assuming it's 'time' and format is 'M/D/YYYY'
+        df_vnindex['Ngày'] = pd.to_datetime(df_vnindex['time'], errors='coerce')
+        df_vnindex = df_vnindex.rename(columns={
+            'open': 'VNIndex_Mở_cửa',
+            'high': 'VNIndex_Cao_nhất',
+            'low': 'VNIndex_Thấp_nhất',
+            'close': 'VNIndex_Đóng_cửa',
+            'volume': 'VNIndex_Khối_lượng'
+        })
+        df_vnindex = df_vnindex.drop(columns=['time'])
+        df_vnindex = df_vnindex.drop_duplicates(subset=['Ngày'], keep='first')
+        print(f"[+] Đã đọc file VN-Index: {len(df_vnindex)} dòng.")
+    except Exception as e:
+        print(f"Lỗi đọc file VN-Index: {e}")
+        return
+
     df_gold_sjc = df_gold[df_gold['Loại vàng'].str.contains("SJC", na=False)].copy()
     
     if 'Thời gian' in df_gold_sjc.columns:
@@ -33,11 +51,12 @@ def process_and_merge():
     print(f"[+] Sau khi lọc vàng SJC chuẩn: {len(df_gold_sjc)} dòng.")
 
     df_final = pd.merge(df_gold_sjc, df_rate, on='Ngày', how='outer')
+    df_final = pd.merge(df_final, df_vnindex, on='Ngày', how='outer')
     df_final = df_final.sort_values(by='Ngày').reset_index(drop=True)
 
     max_gold_date = df_gold_sjc['Ngày'].max()
 
-    df_final = df_final.fillna(method='ffill')
+    df_final = df_final.ffill()
     
     df_final = df_final[df_final['Ngày'] <= max_gold_date]
     

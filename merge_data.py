@@ -55,10 +55,6 @@ def process_and_merge():
     df_final = df_final.sort_values(by='Ngày').reset_index(drop=True)
 
     max_gold_date = df_gold_sjc['Ngày'].max()
-
-    # Không ffill() để giữ nguyên dữ liệu trống (NaN) của VN-Index vào các ngày lễ, tết, cuối tuần
-    # theo đúng yêu cầu của Thầy.
-    # df_final = df_final.ffill()
     
     df_final = df_final[df_final['Ngày'] <= max_gold_date]
     

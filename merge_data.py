@@ -58,8 +58,8 @@ def process_and_merge():
     
     df_final = df_final[df_final['Ngày'] <= max_gold_date]
     
-    output_csv = "FINAL_DuLieu_Vang_TyGia_2009_2026.csv"
-    output_excel = "FINAL_DuLieu_Vang_TyGia_2009_2026.xlsx"
+    output_csv = "FINAL_3Files_Vang_TyGia_VNIndex.csv"
+    output_excel = "FINAL_3Files_Vang_TyGia_VNIndex.xlsx"
     
     df_final.to_csv(output_csv, index=False, encoding='utf-8-sig')
     try:
